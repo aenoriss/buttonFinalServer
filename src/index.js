@@ -8,6 +8,9 @@ app.ws("/echo", ws => {
         console.log("Received from client: ", msg);
         ws.send(msg);
     })
+
+    ws.on('close', () => console.log('Client disconnected'));
+
 })
 
 app.listen(port, () => {

@@ -1,7 +1,7 @@
 const app = require("express")();
 const appWs = require("express-ws")(app);
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 app.ws("/echo", ws => {
     ws.on("message", msg => {

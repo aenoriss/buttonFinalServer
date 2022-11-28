@@ -18,7 +18,7 @@ wss.on('connection', (ws) => {
         ledOn ? ledOn = false : ledOn = true; 
         console.log("ledOn", ledOn);
         wss.clients.forEach((client) => {
-            client.send([`${ledOn}`])
+            client.send(`${ledOn}`);
           });
       });
     ws.on('close', () => console.log('Client disconnected'));

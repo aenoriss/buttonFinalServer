@@ -11,13 +11,14 @@ const server = express()
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
   
 const wss = new Server({ server });
+
 wss.on('connection', (ws) => {
     console.log('Client connected');
     ws.on('message', function message(data) {
         ledOn ? ledOn = false : ledOn = true; 
         console.log("ledOn", ledOn);
         wss.clients.forEach((client) => {
-            client.send([ledOn]);
+            client.send([`${ledOn}`])
           });
       });
     ws.on('close', () => console.log('Client disconnected'));

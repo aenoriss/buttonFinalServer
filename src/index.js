@@ -1,18 +1,22 @@
-const app = require("express")();
-const appWs = require("express-ws")(app);
+const express = require("express");
 
-const port = process.env.PORT || 5000
+const PORT = process.env.PORT || 3000;
+const INDEX = '/index.html';
+const { Server } = require('ws');
 
-app.ws("/echo", ws => {
-    ws.on("message", msg => {
-        console.log("Received from client: ", msg);
-        ws.send(msg);
-    })
-
+const server = express()
+  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+  
+const wss = new Server({ server });
+wss.on('connection', (ws) => {
+    console.log('Client connected');
     ws.on('close', () => console.log('Client disconnected'));
+  });
 
-})
+  setInterval(() => {
+    wss.clients.forEach((client) => {
+      client.send(new Date().toTimeString());
+    });
+  }, 1000);
 
-app.listen(port, () => {
-    console.log(`server is up on port ${port}!`)
-})

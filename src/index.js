@@ -16,14 +16,10 @@ wss.on('connection', (ws) => {
     ws.on('message', function message(data) {
         ledOn ? ledOn = false : ledOn = true; 
         console.log("ledOn", ledOn);
-        console.log('received: %s', data);
+        wss.clients.forEach((client) => {
+            client.send(ledOn);
+          });
       });
     ws.on('close', () => console.log('Client disconnected'));
   });
-
-  setInterval(() => {
-    wss.clients.forEach((client) => {
-      client.send(new Date().toTimeString());
-    });
-  }, 1000);
 
